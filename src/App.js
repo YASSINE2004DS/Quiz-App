@@ -12,6 +12,7 @@ import EditQuiz from './Components/Admin/QuizManagement/EditQuiz';
 import QuestionList from './Components/Admin/QuestionManagement/QuestionList';
 import AddQuestion from './Components/Admin/QuestionManagement/AddQuestion';
 import EditQuestion from './Components/Admin/QuestionManagement/EditQuestion';
+import Question1_1 from './Components/User/Question1_1';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
     <Route path="/dashboardAdmin/quiz/:quizId/questions" element={<QuestionList />} />
     <Route path="/dashboardAdmin/quiz/:quizId/add-question" element={<AddQuestion />} />
     <Route path="/dashboardAdmin/quiz/:quizId/edit-question/:questionId" element={<EditQuestion />} />
+    <Route path="/dashboardAdmin/quiz/:quizId/questions1_1" element={<Question1_1 />} />
 
     
 
