@@ -30,6 +30,16 @@ const handleNext = () => {
     setShowScore(true);
   }
 };
+
+const tryagain = () => {
+
+      setCurrentIndex(0);
+      setSelectedAnswer(null); 
+      setShowScore(false);
+      setScore(0);
+      setSauvegardeanswer([]);
+
+  };
 const handlePrecedent = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
@@ -74,18 +84,25 @@ const handlePrecedent = () => {
         </button>
       </div>
 
-      {loading ? (
+      {(loading  )? (
         <div className="loader">Chargement...</div>
-      ) : (
+      ) : (questions.length) == 0 ? (    
+      <div className="empty-state header-cell table-header table-header" style={{height:250 , display:'block' , width:'600px' , borderRadius:10 ,  }}>
+     <div>Aucune Quiz Disponnible</div></div>) :(
         <div className="quiz-table">
-          <div className="table-header">
+          {!(showScore) ? ( <div className="table-header">
             <div className="header-cell">Question {currentIndex+1}</div>
-          {!showScore && (<span style={{color:'darkred'}}>🛑 Veuillez choisir une réponse avant de passer à la suivante. Une seule réponse doit être choisie à la fois. </span>)}  
-          </div>
+         <span style={{color:'darkred'}}>🛑 Veuillez choisir une réponse avant de passer à la suivante. Une seule réponse doit être choisie à la fois. </span>
+          </div>):
+          (
+            <div className="table-header">
+            <div className="header-cell">SCORE</div>
+            </div>
+          )
+          }  
 
    
-
-          <div className="table-rows-container">
+ <div className="table-rows-container">
   {questions.length > 0 && !showScore ? (
     <div className="table-row" key={questions[currentIndex]._id}>
       <div className="table-cell" style={{fontWeight:'bold' , fontSize:20 ,}}>
@@ -100,7 +117,7 @@ const handlePrecedent = () => {
           
               onClick={() =>!selectedAnswer && handleAnswer(choice)}
               style={{ cursor: selectedAnswer==null ? 'pointer' : 'default' , backgroundColor: 
-                ( (choice==questions[currentIndex].correctAnswer && selectedAnswer==questions[currentIndex].correctAnswer) )
+                ( (choice==questions[currentIndex].correctAnswer && selectedAnswer==questions[currentIndex].correctAnswer) || (choice==questions[currentIndex].correctAnswer && selectedAnswer!=null) )
                 ? 'green' : selectedAnswer== choice ? 'red' : 'white' , padding:30 , fontWeight:'bold' , fontSize:20 , }}
             >
               {choice}
@@ -110,7 +127,7 @@ const handlePrecedent = () => {
       </div>
     </div>
   ) : (
-    <div className="empty-state" style={{height:200 , display:'block'}}>
+    <div className="empty-state" style={{height:250 , display:'block'}}>
      <div> 🎉 Quiz terminé !</div><br /><br/>
      
       <div style={{fontWeight:'bold'  ,}}>Votre score : <span style={{color:(score >= questions.length/2 ) ? 'green' : 'red' , fontWeight:'bold' ,}}>{score} / {questions.length} </span>
@@ -118,9 +135,13 @@ const handlePrecedent = () => {
         <span>✅</span>
       ):(
         <span>❌</span>
+
       )
       }
       </div>  
+      {(score < questions.length/2) && (<button style={{marginTop:25}}
+      onClick={tryagain}
+       className='button'>try again</button>)}
     </div>
   )}
 
@@ -149,6 +170,7 @@ const handlePrecedent = () => {
         </div>
       )}
       </div>
+   
 
       <style jsx>{`
         .quiz-list-container {
@@ -275,6 +297,10 @@ const handlePrecedent = () => {
           padding: 0.5rem 0;
           border-bottom: 1px solid #f0f0f0;
         }
+         .choice-item::hover
+         {
+           background-color:red ;
+         }
         
         .choice-item:last-child {
           border-bottom: none;
@@ -352,6 +378,11 @@ const handlePrecedent = () => {
             order: 1;
             width: 100%;
             margin: 1rem 0;
+          }
+
+         ul  li:hover
+          {
+          background-color:lightgray ;
           }
           
           .back-button {

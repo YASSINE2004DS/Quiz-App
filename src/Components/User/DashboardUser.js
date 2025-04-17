@@ -2,12 +2,30 @@
 import quizIcon from "../../assets/quiz.png";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { FiPlus, FiEye, FiEdit2, FiTrash2, FiArrowLeft } from "react-icons/fi";
 import { FaQuestionCircle } from "react-icons/fa";
 
 
 function DashboardUser() {
+
+      const handleLogout = () => {
+        Swal.fire({
+          title: 'Êtes-vous sûr de vouloir vous déconnecter ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Oui',
+          cancelButtonText: 'Annuler'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem('token');
+            navigate('/');
+          }
+        });
+      };
 
     const [quizzes, setQuizzes] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -39,8 +57,14 @@ function DashboardUser() {
 
     }}>
       <div style={{ textAlign: 'center', marginBottom: '2rem' , position:'absolute' , top:15 }}>
-        <h1 style={{ color:'orange' , fontSize: '2.5rem', fontWeight: 'bold' }}>Quiz App</h1>
+        <h1 style={{ color:'darkorange' , fontSize: '2.5rem', fontWeight: 'bold' }}>Quiz App</h1>
         <p style={{ fontSize: '1.1rem' }}>Bienvenue sur la plateforme Quiz.</p>
+      </div>
+      <div style={{alignSelf:'flex-end', position:'absolute' , top:20 , right:20 ,}}> 
+        <button onClick={handleLogout} 
+        className="button" 
+        style={{backgroundColor:'darkorange' , borderColor:'gray' , fontWeight:'bold' , cursor:'pointer' ,}}>Déconnexion
+        </button>
       </div>
           <div className="table-rows-container" style={{}}>
             {quizzes.length > 0 ? (
@@ -48,13 +72,14 @@ function DashboardUser() {
                 <div className="table-row" key={quiz._id}>
                     <div style={{display:'flex' , flexDirection:'column'}}>
                   <h1 className="table-cell">{quiz.title}</h1>
-                  <div className="table-cell description" style={{alignSelf:'flex-start' , color:'white'}}>{quiz.description}</div>
+                  <div className="table-cell description" style={{alignSelf:'flex-start' , color:'gray'}}>{quiz.description}</div>
                   </div>
-                   <button className="button Sbutton"
+                   <button className="button "
                    style={{
-                    borderColor:'red',
-                    backgroundColor:'darkred',
-                    alignSelf:'flex-end'
+                    borderColor:'blue',
+                    backgroundColor:'rgb(92, 164, 231)',
+                    alignSelf:'flex-end',
+                    cursor:'pointer',
                    }}
                    onClick={() => navigate(`/dashboardAdmin/quiz/${quiz._id}/questions1_1`)}
                    >Commencer</button>
@@ -167,9 +192,9 @@ function DashboardUser() {
           align-items: center;
           transition: background 0.2s;
           border-bottom: 1px solid #edf2f7;
-          height:200px ;
+          height:280px ;
           width:99.5% ;
-          background-color:darkorange ;
+          background-color:lightblue ;
         // background-image : url(${quizIcon}) no-repeat ;
         }
         
@@ -178,7 +203,7 @@ function DashboardUser() {
         }
         
         .table-row:hover {
-          background:orange;
+          background: #3182ce;
         }
         
         .table-cell {
